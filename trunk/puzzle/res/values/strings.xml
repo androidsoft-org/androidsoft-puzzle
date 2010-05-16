@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="app_name">"Puzzle"</string>
+    <string name="activity_title">"Cheer Bear Puzzle"</string>
+    <string name="success">"Congratulations, That's done !"</string>
+    <string name="new_game">"New game"</string>
+    <string name="quit">"Quit"</string>
+    <string name="button_play">"Play"</string>
+    <string name="version">"Version 1.0"</string>
+    <string name="message_1">"Good move !"</string>
+    <string name="message_2">"Are you sure ?"</string>
+    <string name="message_3">"It's not so easy !"</string>
+    <string name="message_4">"Hum ..."</string>
+    <string name="message_5">"Don't give up"</string>
+    <string name="message_6">"Nice !"</string>
+    <string name="message_7">"Is this a new stategy ?"</string>
+    <string name="message_8">"You seem to be on the right way"</string>
+    <string name="message_9">"What time do you plan to finish?"</string>
+    <string name="message_10">"Are you really focused?"</string>
+    <string name="message_11">"Be tenacious, you will get it!"</string>
+</resources>
