@@ -12,8 +12,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.androidsoft.games.puzzle.kids;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Tile
@@ -21,6 +25,10 @@ package org.androidsoft.games.puzzle.kids;
  */
 public class Tile
 {
+    private static final String GOOD_POSITION = "GoodPosition";
+    private static final String CURRENT_POSITION = "CurrentPosition";
+    private static final String RES_ID = "ResId";
+
     private int mGoodPosition;
     private int mCurrentPosition;
     private int mResId;
@@ -31,6 +39,20 @@ public class Tile
         mCurrentPosition = nCurrent;
         mResId = nResId;
 
+    }
+
+    Tile(JSONObject object)
+    {
+        try
+        {
+            mGoodPosition = object.getInt(GOOD_POSITION);
+            mCurrentPosition = object.getInt(CURRENT_POSITION);
+            mResId = object.getInt(RES_ID);
+        }
+        catch (JSONException ex)
+        {
+            Logger.getLogger(Tile.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     Position getPosition(int nWidth)
@@ -59,5 +81,21 @@ public class Tile
     {
         return mCurrentPosition == position;
     }
-            
+
+    JSONObject json()
+    {
+        JSONObject object = new JSONObject();
+        try
+        {
+            object.accumulate( GOOD_POSITION, mGoodPosition );
+            object.accumulate( CURRENT_POSITION, mCurrentPosition );
+            object.accumulate( RES_ID, mResId );
+        }
+        catch (JSONException ex)
+        {
+            Logger.getLogger(Tile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return object;
+
+    }
 }
