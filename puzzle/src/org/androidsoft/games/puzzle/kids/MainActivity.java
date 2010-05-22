@@ -12,14 +12,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.androidsoft.games.puzzle.kids;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Toast;
 import java.util.ArrayList;
 
@@ -29,26 +30,31 @@ import java.util.ArrayList;
  */
 public class MainActivity extends AbstractMainActivity
 {
-    private static final int TOAST_FREQUENCY = 10;
 
+    private static final String PREF_LIST = "list";
+    private static final String PREF_MOVE_COUNT = "move_count";
+    private static final int TOAST_FREQUENCY = 10;
     private static final int mWidth = 4;
     private static final int mHeight = 4;
-    private final static int[] tiles = { R.drawable.item_1, R.drawable.item_2,
+    private final static int[] tiles =
+    {
+        R.drawable.item_1, R.drawable.item_2,
         R.drawable.item_3, R.drawable.item_4, R.drawable.item_5, R.drawable.item_6,
         R.drawable.item_7, R.drawable.item_8, R.drawable.item_9, R.drawable.item_10,
         R.drawable.item_11, R.drawable.item_12, R.drawable.item_13, R.drawable.item_14,
         R.drawable.item_15, R.drawable.item_16
     };
-    private final static int[] messages = { R.string.message_1, R.string.message_2,
+    private final static int[] messages =
+    {
+        R.string.message_1, R.string.message_2,
         R.string.message_3, R.string.message_4, R.string.message_5,
         R.string.message_6, R.string.message_7, R.string.message_8,
         R.string.message_9, R.string.message_10, R.string.message_11
     };
-
     private Tile mEmptyTile;
     private int mMoveCount;
     private GridView mGridView;
-    static ArrayList<Tile> mList = new ArrayList<Tile>();
+    static TileList mList = new TileList();
 
     /**
      * {@inheritDoc }
@@ -57,6 +63,9 @@ public class MainActivity extends AbstractMainActivity
     public void onCreate(Bundle icicle)
     {
         super.onCreate(icicle);
+
+        ImageView image = (ImageView) findViewById(R.id.second_logo);
+        image.setImageResource(R.drawable.second_logo);
 
         newGame();
     }
@@ -77,11 +86,53 @@ public class MainActivity extends AbstractMainActivity
     protected void newGame()
     {
         initData();
-        if( mGridView == null )
+        if (mGridView == null)
         {
             initGrid();
         }
         drawGrid();
+    }
+
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        SharedPreferences prefs = getPreferences(0);
+
+        String serialized = prefs.getString(PREF_LIST, null);
+        if (serialized != null)
+        {
+            mList = new TileList(serialized);
+            mEmptyTile = mList.getTileByResId(R.drawable.empty_tile);
+            mMoveCount = prefs.getInt(PREF_MOVE_COUNT, 0);
+        }
+    }
+
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+
+        SharedPreferences.Editor editor = getPreferences(0).edit();
+        if( !mQuit )
+        {
+            // Paused without quit - save state
+            editor.putString(PREF_LIST, mList.serialize());
+            editor.putInt(PREF_MOVE_COUNT, mMoveCount);
+        }
+        else
+        {
+            editor.remove(PREF_LIST );
+            editor.remove(PREF_MOVE_COUNT );
+        }
+        editor.commit();
     }
 
     /**
@@ -102,12 +153,11 @@ public class MainActivity extends AbstractMainActivity
                 {
                     mMoveCount++;
                     drawGrid();
-                    toast( mMoveCount );
+                    toast(mMoveCount);
                     checkComplete();
                 }
 
             }
-
         });
 
     }
@@ -164,10 +214,9 @@ public class MainActivity extends AbstractMainActivity
                     Tile t2 = getTile(x + 1, y);
                     t1.swapPosition(t2);
                 }
-            }
-            else
+            } else
             {
-                for (int x = nXmax ; x > nXmin; x--)
+                for (int x = nXmax; x > nXmin; x--)
                 {
                     Tile t1 = getTile(x, y);
                     Tile t2 = getTile(x - 1, y);
@@ -195,7 +244,7 @@ public class MainActivity extends AbstractMainActivity
     {
         for (Tile t : mList)
         {
-            if (t.isAtPosition( position ) )
+            if (t.isAtPosition(position))
             {
                 return t;
             }
@@ -233,7 +282,7 @@ public class MainActivity extends AbstractMainActivity
     {
         for (Tile t : mList)
         {
-            if ( ! t.isAtTheGoodPosition() )
+            if (!t.isAtTheGoodPosition())
             {
                 return false;
             }
@@ -249,14 +298,14 @@ public class MainActivity extends AbstractMainActivity
         mMoveCount = 0;
         mList.clear();
         ArrayList<Integer> shuffle = getShuffledList();
-        for( int i = 0 ; i < tiles.length -1 ; i++ )
+        for (int i = 0; i < tiles.length - 1; i++)
         {
-            mList.add(new Tile( i, shuffle.get(i), tiles[i] ));
+            mList.add(new Tile(i, shuffle.get(i), tiles[i]));
         }
         int nLast = tiles.length - 1;
-        mEmptyTile = new Tile( nLast, shuffle.get( nLast ), R.drawable.empty_tile );
-        mList.add( mEmptyTile );
-        
+        mEmptyTile = new Tile(nLast, shuffle.get(nLast), R.drawable.empty_tile);
+        mList.add(mEmptyTile);
+
     }
 
     /**
@@ -277,13 +326,15 @@ public class MainActivity extends AbstractMainActivity
 
     private void toast(int nMoveCount)
     {
-        if(( nMoveCount > 0 ) && ( nMoveCount % TOAST_FREQUENCY == 0 ))
+        if ((nMoveCount > 0) && (nMoveCount % TOAST_FREQUENCY == 0))
         {
             double dPos = Math.random() * messages.length;
             int nPos = (int) dPos;
-            String message = this.getString( messages[ nPos ] );
-            Toast.makeText( MainActivity.this, message, Toast.LENGTH_SHORT).show();
+            String message = this.getString(messages[nPos]);
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
 }
