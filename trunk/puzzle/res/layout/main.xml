@@ -44,7 +44,7 @@
         <view  class="org.androidsoft.games.puzzle.kids.PuzzleView"
               android:id="@+id/gridview"
               android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="fill_parent"
               android:numColumns="4"
               android:verticalSpacing="2dp"
               android:horizontalSpacing="2dp"
