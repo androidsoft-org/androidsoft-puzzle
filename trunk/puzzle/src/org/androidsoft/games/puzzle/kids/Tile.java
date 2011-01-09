@@ -41,6 +41,9 @@ public class Tile
 
     }
 
+    /**
+     * Constructor from a JSON object
+     */
     Tile(JSONObject object)
     {
         try
@@ -82,6 +85,10 @@ public class Tile
         return mCurrentPosition == position;
     }
 
+    /**
+     * Build a JSONObject representing the tile
+     * @return a JSONObject
+     */
     JSONObject json()
     {
         JSONObject object = new JSONObject();

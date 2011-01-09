@@ -35,20 +35,19 @@
 
     <LinearLayout
         android:id="@+id/gameview"
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
         android:layout_height="fill_parent"
               android:gravity="center"
               android:visibility="gone">
-    
+
         <view  class="org.androidsoft.games.puzzle.kids.PuzzleView"
               android:id="@+id/gridview"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
+              android:layout_width="wrap_content"
+              android:layout_height="fill_parent"
               android:numColumns="4"
               android:verticalSpacing="2dp"
               android:horizontalSpacing="2dp"
-              android:stretchMode="columnWidth"
               />
     </LinearLayout>
 </FrameLayout>

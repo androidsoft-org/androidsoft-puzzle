@@ -29,18 +29,38 @@ public class ImageAdapter extends BaseAdapter
 {
 
     private Context mContext;
+    private Puzzle mPuzzle;
+    private int mTileSize;
 
-    public ImageAdapter(Context c)
+    public ImageAdapter(Context c , int width, int height, int margin , Puzzle puzzle )
     {
         mContext = c;
+        mPuzzle = puzzle;
+        if (width > height)
+        {
+            mTileSize = getTileSize(width, height, puzzle.getMaxTilesPerRow(), puzzle.getMinTilesPerRow(), margin);
+        } else
+        {
+            mTileSize = getTileSize(height, width, puzzle.getMaxTilesPerRow(), puzzle.getMinTilesPerRow(), margin);
+
+        }
+
     }
+
+    private int getTileSize(int max, int min, int countMax, int countMin, int margin)
+    {
+        int a = max / countMax;
+        int b = min / countMin;
+        return ((a < b) ? a : b ) - margin;
+    }
+
 
     /**
      * {@inheritDoc}
      */
     public int getCount()
     {
-        return MainActivity.mList.size();
+        return mPuzzle.getCount();
     }
 
     /**
@@ -66,19 +86,18 @@ public class ImageAdapter extends BaseAdapter
     {
         ImageView imageView;
         if (convertView == null)
-        {
+        {  // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(76, 76));
+            imageView.setLayoutParams(new GridView.LayoutParams(mTileSize, mTileSize));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(1, 1, 1, 1);
-        }
-        else
+            imageView.setPadding(2, 2, 2, 2);
+        } else
         {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageResource(MainActivity.getResIdAt(position));
 
+        imageView.setImageResource( mPuzzle.getResId( position ));
         return imageView;
     }
 }

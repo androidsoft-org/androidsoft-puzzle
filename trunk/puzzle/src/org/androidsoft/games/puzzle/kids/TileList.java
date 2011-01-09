@@ -28,11 +28,18 @@ import org.json.JSONObject;
  */
 public class TileList extends ArrayList<Tile>
 {
+    /**
+     * Constructor
+     */
     TileList()
     {
 
     }
 
+    /**
+     * Constructeur
+     * @param serialized A serialized list
+     */
     TileList( String serialized )
     {
         try
@@ -52,6 +59,10 @@ public class TileList extends ArrayList<Tile>
 
     }
 
+    /**
+     * Serialize a List
+     * @return The list as a String
+     */
     String serialize()
     {
         JSONArray array = new JSONArray();
