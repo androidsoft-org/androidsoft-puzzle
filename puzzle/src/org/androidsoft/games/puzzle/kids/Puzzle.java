@@ -24,6 +24,13 @@ import java.util.ArrayList;
 public class Puzzle
 {
 
+    public interface OnPuzzleListener
+    {
+
+        void onComplete(int moveCount);
+
+        void onUpdateView(int moveCount);
+    }
     private static final String PREF_LIST = "list";
     private static final String PREF_MOVE_COUNT = "move_count";
     private static final int mWidth = 4;
@@ -86,30 +93,21 @@ public class Puzzle
         }
     }
 
-    void pause(SharedPreferences prefs , boolean quit)
+    void pause(SharedPreferences prefs, boolean quit)
     {
         SharedPreferences.Editor editor = prefs.edit();
-                if( !quit )
+        if (!quit)
         {
             // Paused without quit - save state
             editor.putString(PREF_LIST, mList.serialize());
             editor.putInt(PREF_MOVE_COUNT, mMoveCount);
-        }
-        else
+        } else
         {
-            editor.remove(PREF_LIST );
-            editor.remove(PREF_MOVE_COUNT );
+            editor.remove(PREF_LIST);
+            editor.remove(PREF_MOVE_COUNT);
         }
         editor.commit();
 
-    }
-
-    public interface OnPuzzleListener
-    {
-
-        void onComplete(int moveCount);
-
-        void onUpdateView(int moveCount);
     }
 
     /**

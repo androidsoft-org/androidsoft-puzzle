@@ -28,8 +28,8 @@ import android.widget.Toast;
  */
 public class MainActivity extends AbstractMainActivity implements Puzzle.OnPuzzleListener
 {
-    private static final int TOAST_FREQUENCY = 10;
 
+    private static final int TOAST_FREQUENCY = 10;
     private final static int[] tiles =
     {
         R.drawable.item_1, R.drawable.item_2,
@@ -45,8 +45,7 @@ public class MainActivity extends AbstractMainActivity implements Puzzle.OnPuzzl
         R.string.message_6, R.string.message_7, R.string.message_8,
         R.string.message_9, R.string.message_10, R.string.message_11
     };
-
-    private Puzzle mPuzzle = new Puzzle( tiles , messages , this );
+    private Puzzle mPuzzle = new Puzzle(tiles, messages, this);
     private PuzzleView mPuzzleView;
 
     /**
@@ -60,7 +59,7 @@ public class MainActivity extends AbstractMainActivity implements Puzzle.OnPuzzl
         ImageView image = (ImageView) findViewById(R.id.second_logo);
         image.setImageResource(R.drawable.second_logo);
 
-       
+
         newGame();
     }
 
@@ -70,7 +69,7 @@ public class MainActivity extends AbstractMainActivity implements Puzzle.OnPuzzl
     @Override
     protected View getGameView()
     {
-        return findViewById( R.id.gameview);
+        return findViewById(R.id.gameview);
     }
 
     /**
@@ -83,7 +82,11 @@ public class MainActivity extends AbstractMainActivity implements Puzzle.OnPuzzl
         if (mPuzzleView == null)
         {
             mPuzzleView = (PuzzleView) findViewById(R.id.gridview);
-            mPuzzleView.setPuzzle( mPuzzle );
+            mPuzzleView.setPuzzle(mPuzzle);
+//            int width = getGameView().getWidth();
+//            int height = getGameView().getHeight();
+//            int size = ( width < height ) ? width : height;
+//            mPuzzleView.setColumnWidth( size / 4 );
         }
         drawGrid();
     }
@@ -94,7 +97,7 @@ public class MainActivity extends AbstractMainActivity implements Puzzle.OnPuzzl
     @Override
     protected void about()
     {
-        Intent intent = new Intent( this , CreditsActivity.class );
+        Intent intent = new Intent(this, CreditsActivity.class);
         startActivity(intent);
     }
 
@@ -107,10 +110,9 @@ public class MainActivity extends AbstractMainActivity implements Puzzle.OnPuzzl
         super.onResume();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mPuzzle.resume( prefs );
+        mPuzzle.resume(prefs);
 
     }
-
 
     /**
      * {@inheritDoc }
@@ -120,7 +122,8 @@ public class MainActivity extends AbstractMainActivity implements Puzzle.OnPuzzl
     {
         super.onPause();
 
-        mPuzzle.pause( getPreferences(0) , mQuit );
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mPuzzle.pause( prefs, mQuit);
     }
 
     private void toast(int nMoveCount)
@@ -136,13 +139,13 @@ public class MainActivity extends AbstractMainActivity implements Puzzle.OnPuzzl
 
     public void onComplete(int moveCount)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        showEndDialog();
     }
 
     public void onUpdateView(int moveCount)
     {
-            drawGrid();
-            toast(moveCount);
+        drawGrid();
+        toast(moveCount);
     }
 
     private void drawGrid()
