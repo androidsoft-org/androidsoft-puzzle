@@ -258,7 +258,7 @@ public class Puzzle
         {
             double dPos = Math.random() * list.size();
             int nPos = (int) dPos;
-            list.add(nPos, new Integer(i));
+            list.add(nPos , i);
         }
         return list;
     }

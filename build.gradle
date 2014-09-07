@@ -1,4 +1,4 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 buildscript {
     repositories {
@@ -14,16 +14,15 @@ repositories {
     mavenCentral()
 }
 
-
+dependencies {
+    compile fileTree( dir: 'libs', include:'*.jar' )
+}
 
 android {
     compileSdkVersion 19
 
     buildToolsVersion "19.1.0"
 
-    dependencies {
-        compile fileTree( dir: 'libs', include:'*.jar' )
-    }
 }
 
 

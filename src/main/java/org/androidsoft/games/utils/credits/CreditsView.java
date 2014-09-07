@@ -110,18 +110,21 @@ public class CreditsView extends SurfaceView implements SurfaceHolder.Callback
     private final Runnable mDrawFrames = new Runnable()
     {
 
+        @Override
         public void run()
         {
             drawFrame();
         }
     };
 
+    @Override
     public void surfaceCreated(SurfaceHolder holder)
     {
         mThread = new CreditsThread();
         mThread.start();
     }
 
+    @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
     {
         mHandler.removeCallbacks(mDrawFrames);
@@ -145,6 +148,7 @@ public class CreditsView extends SurfaceView implements SurfaceHolder.Callback
         mThread.start();
     }
 
+    @Override
     public void surfaceDestroyed(SurfaceHolder holder)
     {
         mHandler.removeCallbacks(mDrawFrames);
@@ -160,7 +164,7 @@ public class CreditsView extends SurfaceView implements SurfaceHolder.Callback
         TypedArray entries = res.obtainTypedArray(resArray);
         for (int i = 0; i < entries.length(); i++)
         {
-            CreditsItem item = null;
+            CreditsItem item;
             String entry = entries.getString(i);
             if (entry.startsWith("*"))
             {
@@ -171,6 +175,7 @@ public class CreditsView extends SurfaceView implements SurfaceHolder.Callback
             }
             list.add(item);
         }
+        entries.recycle();
     }
 
     private class CreditsThread extends Thread

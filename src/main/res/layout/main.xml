@@ -11,6 +11,7 @@
         android:layout_height="wrap_content">
 
         <ImageView android:id="@+id/image_splash"
+                   android:contentDescription="@string/image_splash"
                    android:layout_width="fill_parent"
                    android:layout_height="wrap_content"
                    android:gravity="center" />
@@ -18,8 +19,7 @@
                   android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
                   android:gravity="center_horizontal|center_vertical"
-                  android:layout_marginBottom="10px"
-                  android:text="@+string/version" />
+                  android:layout_marginBottom="10dp" />
         <Button android:id="@+id/button_play"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -27,6 +27,7 @@
                 android:horizontalSpacing="20dp"
                 android:text="@string/button_play"/>
         <ImageView android:id="@+id/second_logo"
+                   android:contentDescription="@string/image_other_logo"
                    android:layout_width="fill_parent"
                    android:layout_height="wrap_content"
                    android:gravity="center" />
