@@ -23,6 +23,11 @@ android {
 
     buildToolsVersion "19.1.0"
 
+    lintOptions {
+        enable 'UnusedIds', 'EasterEgg' //, 'NewerVersionAvailable'
+    }
+
+    apply from: 'sign.gradle'
 }
 
 
